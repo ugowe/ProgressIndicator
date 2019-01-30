@@ -12,6 +12,7 @@
 		D8F13A102200B0F700FBB8AA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8F13A0E2200B0F700FBB8AA /* Main.storyboard */; };
 		D8F13A122200B0F900FBB8AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8F13A112200B0F900FBB8AA /* Assets.xcassets */; };
 		D8F13A152200B0F900FBB8AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8F13A132200B0F900FBB8AA /* LaunchScreen.storyboard */; };
+		D8F13A1E2200BB4C00FBB8AA /* ProgressIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F13A1D2200BB4C00FBB8AA /* ProgressIndicator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		D8F13A112200B0F900FBB8AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8F13A142200B0F900FBB8AA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D8F13A162200B0F900FBB8AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8F13A1D2200BB4C00FBB8AA /* ProgressIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressIndicator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				D8F13A0A2200B0F700FBB8AA /* AppDelegate.swift */,
 				D8F13A0C2200B0F700FBB8AA /* ViewController.swift */,
+				D8F13A1D2200BB4C00FBB8AA /* ProgressIndicator.swift */,
 				D8F13A0E2200B0F700FBB8AA /* Main.storyboard */,
 				D8F13A112200B0F900FBB8AA /* Assets.xcassets */,
 				D8F13A132200B0F900FBB8AA /* LaunchScreen.storyboard */,
@@ -136,6 +139,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8F13A0D2200B0F700FBB8AA /* ViewController.swift in Sources */,
+				D8F13A1E2200BB4C00FBB8AA /* ProgressIndicator.swift in Sources */,
 				D8F13A0B2200B0F700FBB8AA /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

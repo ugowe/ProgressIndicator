@@ -21,7 +21,7 @@ extension ViewController {
 		label.text = "Download Progress: \(downloadProgress)%"
 		errorLabel = label
 		if let errorLabel = errorLabel {
-		self.view.addSubview(errorLabel)
+			self.view.addSubview(errorLabel)
 		}
 	}
 	
@@ -36,24 +36,20 @@ extension ViewController {
 			errorButton.removeFromSuperview()
 		}
 	}
-
 	
 	func downloadComplete(){
 	}
 	
-	func presentErrorScreens(retryBlock: VoidClosure){
-		createErrorButton()
-		
-	}
 	
-	func createErrorButton() {
+	func createErrorButton(retryBlock: @escaping VoidClosure) {
 		let buttonFrame = CGRect(x: 0, y: 0, width: 150, height: 25)
-		let myButton = UIButton(type: .system)
+		let myButton = ErrorButton(type: .system)
 		myButton.tag = buttonTag
 		myButton.frame = buttonFrame
 		myButton.setTitle("Error Downloading", for: .normal)
 		myButton.center.x = self.view.center.x
 		myButton.center.y = 300
+		myButton.retryBlock = retryBlock
 		myButton.addTarget(self, action: #selector(self.showErrorAlert), for: .touchUpInside)
 		errorButton = myButton
 		if let errorButton = errorButton {
@@ -61,9 +57,10 @@ extension ViewController {
 		}
 	}
 	
-
+	
 	@objc func showErrorAlert(){
 		self.removeButton()
+		guard let retryRequest = errorButton?.retryBlock else { assertionFailure("ErrorButton is nil"); return }
 		if let error = downloadError {
 			let controller = UIAlertController(
 				title: "Error",
@@ -75,7 +72,8 @@ extension ViewController {
 			let retryAction = UIAlertAction(
 				title: "Retry",
 				style: .default) { _ in
-					self.retryRequest()
+					
+				return retryRequest()
 			}
 			
 			controller.addAction(retryAction)
@@ -83,10 +81,13 @@ extension ViewController {
 			self.present(controller, animated: true, completion: nil)
 		}
 	}
-	
-	func retryRequest() {
-		self.view.backgroundColor = .gray
-		
-	}
-	
 }
+
+class ErrorButton: UIButton {
+	typealias VoidClosure = () -> Void
+	
+	var retryBlock: (VoidClosure)?
+}
+
+
+

@@ -20,23 +20,13 @@ class ViewController: UIViewController {
 	let buttonTag: Int = 35
 	var downloadError: NSError?
 	let downloadProgress: Float = 1
-	var errorButton: UIButton?
+	var errorButton: ErrorButton?
 	var errorLabel: UILabel?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		//runTimer()
 	}
-	
-	enum GoodError: LocalizedError {
-		case myFailure
-		var errorDescription: String? {
-			switch self {
-			case .myFailure: return "GoodErrorMyFailure"
-			}
-		}
-	}
-
 
 	func runTimer(){
 		progressIncrement = 1.0/duration
@@ -59,7 +49,11 @@ class ViewController: UIViewController {
 		if progressCounter > 1.0000001 {
 			let error = NSError(domain: "", code: NSBundleOnDemandResourceInvalidTagError, userInfo: nil)
 			self.downloadError = error
-			self.createErrorButton()
+			self.createErrorButton { [weak self] in
+				guard let strongSelf = self else { return }
+				strongSelf.view.backgroundColor = .gray
+
+			}
 		}
 	}
 	
@@ -68,8 +62,6 @@ class ViewController: UIViewController {
 		runTimer()
 		self.removeButton()
 	}
-	
-	
-
 }
+
 

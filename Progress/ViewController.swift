@@ -20,12 +20,20 @@ class ViewController: UIViewController {
 	let buttonTag: Int = 35
 	var downloadError: NSError?
 	let downloadProgress: Float = 1
-	var errorButton: ErrorButton?
-	var errorLabel: UILabel?
+	var progressIndicator: ProgressIndicator?
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		//runTimer()
+		
+		progressIndicator = ProgressIndicator(frame: CGRect.zero)
+//		progressIndicator?.center = self.view.center
+		progressIndicator?.center.x = 175
+		progressIndicator?.center.y = 300
+		if let progressIndicator = progressIndicator {
+			self.view.addSubview(progressIndicator)
+		}
+
 	}
 
 	func runTimer(){
@@ -38,10 +46,10 @@ class ViewController: UIViewController {
 		 progressBar.progress = progressCounter
 		
 		if progressCounter < downloadProgress {
-			self.removeLabel()
-			self.downloadInProgress(with: progressCounter)
+			self.progressIndicator?.removeLabel()
+			self.progressIndicator?.downloadInProgress(with: progressCounter)
 		} else if progressCounter >= downloadProgress {
-			self.removeLabel()
+			self.progressIndicator?.removeLabel()
 		}
 		
 		progressCounter = progressCounter + progressIncrement
@@ -49,7 +57,7 @@ class ViewController: UIViewController {
 		if progressCounter > 1.0000001 {
 			let error = NSError(domain: "", code: NSBundleOnDemandResourceInvalidTagError, userInfo: nil)
 			self.downloadError = error
-			self.createErrorButton { [weak self] in
+			self.progressIndicator?.createErrorButton { [weak self] in
 				guard let strongSelf = self else { return }
 				strongSelf.view.backgroundColor = .gray
 
@@ -60,7 +68,7 @@ class ViewController: UIViewController {
 	@IBAction func resetTimer(_ sender: Any) {
 		progressCounter = 0
 		runTimer()
-		self.removeButton()
+		self.progressIndicator?.removeButton()
 	}
 }
 

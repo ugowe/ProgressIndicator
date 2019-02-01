@@ -9,32 +9,48 @@
 import Foundation
 import UIKit
 
-extension ViewController {
+class ProgressIndicator: UIView {
 	
 	typealias VoidClosure = () -> Void
+	var retryBlock: (VoidClosure)?
+	var errorButton = UIButton()
+	var downloadLabel = UILabel()
+	var downloadError: Error?
+	override var intrinsicContentSize: CGSize {
+		//preferred content size, calculate it if some internal state changes
+		return CGSize(width: 300, height: 300)
+	}
+	
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+	}
+
 	
 	func downloadInProgress(with percent: Float){
 		let downloadProgress = Int(percent * 100)
-		let labelFrame = CGRect(x: 0, y: 0, width: 200, height: 21)
-		let label = UILabel(frame: labelFrame)
-		label.center = self.view.center
-		label.text = "Download Progress: \(downloadProgress)%"
-		errorLabel = label
-		if let errorLabel = errorLabel {
-			self.view.addSubview(errorLabel)
-		}
+		downloadLabel.cgzie
+//		let labelFrame = CGRect(x: 0, y: 0, width: 200, height: 21)
+//		downloadLabel = UILabel(frame: labelFrame)
+////		downloadLabel.center = self.center
+//		downloadLabel.center.x = 175
+//		downloadLabel.center.y = 300
+		downloadLabel.text = "Download Progress: \(downloadProgress)%"
+
+		self.addSubview(downloadLabel)
+
 	}
-	
+
 	func removeLabel(){
-		if let errorLabel = errorLabel {
-			errorLabel.removeFromSuperview()
-		}
+		downloadLabel.removeFromSuperview()
 	}
 	
 	func removeButton(){
-		if let errorButton = errorButton {
-			errorButton.removeFromSuperview()
-		}
+		errorButton.removeFromSuperview()
 	}
 	
 	func downloadComplete(){
@@ -43,24 +59,22 @@ extension ViewController {
 	
 	func createErrorButton(retryBlock: @escaping VoidClosure) {
 		let buttonFrame = CGRect(x: 0, y: 0, width: 150, height: 25)
-		let myButton = ErrorButton(type: .system)
-		myButton.tag = buttonTag
+		let myButton = UIButton(type: .system)
 		myButton.frame = buttonFrame
 		myButton.setTitle("Error Downloading", for: .normal)
-		myButton.center.x = self.view.center.x
+		myButton.center.x = self.center.x
 		myButton.center.y = 300
-		myButton.retryBlock = retryBlock
 		myButton.addTarget(self, action: #selector(self.showErrorAlert), for: .touchUpInside)
 		errorButton = myButton
-		if let errorButton = errorButton {
-			self.view.addSubview(errorButton)
-		}
+
+		self.addSubview(errorButton)
+
 	}
 	
 	
 	@objc func showErrorAlert(){
 		self.removeButton()
-		guard let retryRequest = errorButton?.retryBlock else { assertionFailure("ErrorButton is nil"); return }
+		guard let retryRequest = self.retryBlock else { assertionFailure("ErrorButton is nil"); return }
 		if let error = downloadError {
 			let controller = UIAlertController(
 				title: "Error",
@@ -78,16 +92,9 @@ extension ViewController {
 			
 			controller.addAction(retryAction)
 			controller.addAction(cancelAction)
-			self.present(controller, animated: true, completion: nil)
+			UIApplication.shared.keyWindow?.rootViewController?.present(controller, animated: true, completion: nil)
 		}
 	}
 }
-
-class ErrorButton: UIButton {
-	typealias VoidClosure = () -> Void
-	
-	var retryBlock: (VoidClosure)?
-}
-
 
 
